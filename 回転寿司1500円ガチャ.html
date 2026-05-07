@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回転寿司1500円ガチャ</title>
+
+<style>
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+    background-color: #c89b6d;
+    text-align: center;
+    padding: 15px;
+    transition: 0.5s;
+}
+h1 { color: #0078d7; }
+
+
+
+button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 8px;
+    width: 90%;
+    max-width: 320px;
+}
+button:hover { background: #005fa3; }
+
+#result {
+    margin-top: 30px;
+    background: rgba(255,255,255,0.9);
+    padding: 20px;
+    border-radius: 10px;
+    width: 95%;
+    max-width: 700px;
+    box-sizing: border-box;
+    margin: auto;
+    border: 3px solid #8b5a2b;
+}
+
+/* 左：名前 / 右：値段 */
+#list li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #ccc;
+    padding: 6px 0;
+}
+
+.name {
+    text-align: left;
+    word-break: break-word;
+    width: 70%;
+}
+
+.price {
+    text-align: right;
+    min-width: 140px;
+    font-weight: bold;
+}
+
+/* ✨ キラーン */
+@keyframes shine {
+    0% { filter: brightness(1); transform: scale(1); }
+    50% { filter: brightness(2.5); transform: scale(1.15); }
+    100% { filter: brightness(1); transform: scale(1); }
+}
+
+.shine {
+    animation: shine 0.4s ease;
+}
+
+.allergy-box {
+ 
+    margin: 20px auto;
+    background: rgba(255,255,255,0.85);
+    width: fit-content;
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 2px solid #8b5a2b;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.allergy-box label {
+    font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+
+    h1 {
+        font-size: 26px;
+    }
+
+    button {
+        font-size: 20px;
+        padding: 14px;
+    }
+
+    #list li {
+        font-size: 14px;
+        gap: 10px;
+    }
+
+    .price {
+        min-width: 90px;
+        font-size: 13px;
+    }
+
+}
+
+</style>
+
+</style>
+</head>
+
+<body>
+
+<h1>回転寿司1500円ガチャ</h1>
+
+<button onclick="gacha()">ガチャを回す</button>
+
+<div class="allergy-box">
+
+    <h3>除外</h3>
+
+    <label>
+        <input type="checkbox" value="えび" class="allergy">
+        えび
+    </label>
+
+    <label>
+        <input type="checkbox" value="たまご" class="allergy">
+        卵
+    </label>
+
+    <label>
+        <input type="checkbox" value="小麦" class="allergy">
+        小麦
+    </label>
+
+    <label>
+        <input type="checkbox" value="乳" class="allergy">
+        乳
+    </label>
+
+    <label>
+        <input type="checkbox" value="そば" class="allergy">
+        そば
+    </label>
+
+    <label>
+        <input type="checkbox" value="魚卵" class="allergy">
+        魚卵
+    </label>
+
+    <label>
+        <input type="checkbox" value="軍艦" class="allergy">
+        軍艦
+    </label>
+
+    <label>
+        <input type="checkbox" value="巻き" class="allergy">
+        巻き
+    </label>
+
+
+</div>
+
+<div id="result"></div>
+<!--  音 -->
+<audio id="spin" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+<audio id="item" src="https://www.soundjay.com/button/sounds/button-09.mp3"></audio>
+<audio id="rare" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<script>
+
+const woodBg = "url('https://www.transparenttextures.com/patterns/wood-pattern.png')";
+const woodColor = "#c89b6d";
+
+
+const menu = {
+    "まぐろ": 121,
+    "特製漬けまぐろ": 121,
+    "とろびんちょう": 121,
+    "とろびんちょう山わさび": 121,
+    "特製漬けとろびんちょう": 121,
+    "まぐろ二種盛り(まぐろ・とろびんちょう)": 121,
+    "まぐろ二種盛り(まぐろ・とろたく)": 121,  
+    "まぐろ二種盛り(とろびんちょう・とろたく)": 121,      
+    "まぐろレアステーキつつみ": 121,
+    "とろたくつつみ": 121,
+    "とろたくユッケつつみ": 121,
+    "サーモンつつみ": 121,
+    "サーモン": 121,
+    "サーモンゆず塩": 121,
+    "サーモン山わさび": 121,
+    "えび": 121,
+    "炙りえびマヨ": 121,
+　　"真イカ": 121,
+　　"真イカゆず塩": 121,
+　　"アカイカ": 121,
+　　"アカイカゆず塩": 121,
+    "大葉漬けアカイカ": 121,
+　　"生ハム": 121,
+　　"合鴨": 121,
+　　"合鴨山わさび": 121,
+　　"合鴨ガーリックソース": 121,
+　　"炙り合鴨": 121,
+　　"ローストビーフ": 121,
+　　"ローストビーフガーリックソース": 121,
+　　"ローストビーフガーリックソース山わさび": 121,
+    "旨だしたまご": 121,
+    "旨だしたまごマヨ": 121,
+    "わさびなす": 121,
+    "生エビ": 154,
+    "甘エビ": 154,
+　　"さばの押し寿司": 154,
+    "煮あなご": 154,
+    "煮あなごゆず塩": 154,
+　　"いか天握り": 154,
+　　"いか天握りガーリックマヨ": 154,
+    "えび天握り": 154,
+　　"豚塩カルビ": 154,
+　　"豚塩カルビマヨ": 154,
+　　"ハンバーグ":154,
+　　"ハンバーグマヨ":154,
+　　"まぐろたたき軍艦":121,
+　　"ピリ辛まぐろユッケ軍艦": 121,
+　　"ピリ辛まぐろたたきユッケ軍艦": 121,
+　　"マグロ軍艦":121,
+　　"まぐろたたき納豆軍艦": 121,
+　　"大葉たらこ軍艦": 121,
+　　"たらマヨ軍艦": 121,
+　　"いかオクラ軍艦":121,
+  　"いかオクラ納豆軍艦": 121,
+　　"納豆軍艦": 121,
+　　"納豆キムチ軍艦": 121,
+　　"ツナキムチ軍艦":121,
+　　"かにマヨ軍艦": 121,
+　　"たっぷりかにみそ軍艦": 121,
+　　"大葉かにみそ軍艦": 121,
+　　"シーフードサラダ軍艦": 121,
+　　"ツナサラダ軍艦":121,
+  　"ツナ＆コーン軍艦": 121,
+　　"コーン軍艦": 121,
+　　"わさびえんがわ軍艦": 154,
+　　"納豆巻": 121,
+  　"かっぱ巻": 121,
+　　"たくあん巻": 121,
+　　"特製キンパ風ツナキムチ太巻": 121,
+　　"いなり": 121,
+　　"中トロ": 198,
+　　"特製漬け中トロ": 198,
+　　"炙り中トロゆず塩": 198,
+　　"まぐろレアステーキ": 198,
+　　"とろびんちょうレアステーキ": 198,
+　　"活〆ぶり": 198,
+　　"炙りゆず塩": 198,
+　　"活〆まだい": 198,
+　　"炙りまだいゆず塩": 198,
+　　"とろいわし": 198,
+　　"とろいわし漁師漬け": 198,
+　　"炙りとろいわし": 198,
+　　"大とろサーモン": 198,
+　　"大とろサーモン山わさび": 198,
+　　"サーモンレアステーキ": 198,
+　　"炙りサーモンチーズマヨ": 198,
+　　"アカイカレアステーキ": 198,
+　　"真だこ": 176,
+　　"天然赤えび": 198,
+　　"天然赤えび塩レモン": 198,
+　　"炙り天然赤えび塩レモン": 198,
+　　"天然赤えびレアステーキ": 198,
+　　"えびレアステーキ": 198,
+　　"炙りえびチーズマヨ": 198,
+　　"つぶ貝": 198,
+　　"赤貝": 198,
+　　"サーモンマヨオニオン": 198,
+　　"生ハムマヨオニオン": 198,
+　　"合鴨マヨオニオン": 176,
+　　"サーモンマヨアボカド": 198,
+　　"とろびんちょうマヨアボカド": 198,
+　　"えびマヨアボカド": 198,
+　　"生ハムマヨアボカド": 198,
+　　"牛カルビ": 198,
+　　"牛カルビマヨ": 198,
+　　"炙りハンバーグチーズマヨ": 198,
+　　"炙りうなぎ": 198,
+　　"炙りチーズマヨ": 198,
+　　"サーモンつつみ(いくらのせ)": 198,
+　　"いくら": 198,
+　　"とろいくら": 198,
+　　"つぶっこ": 198,
+　　"かに軍艦": 198,
+　　"かにみそ軍艦": 198,
+　　"生しらす": 198,
+    "うに": 330,
+    "うにいくら": 330,
+　　"鉄火巻": 198,
+　　"まぐろたたき巻": 198,
+　　"カリフォルニアロール": 198,
+　　"まぐろ三種盛り": 198,
+　　"いか三種盛り": 198,
+　　"えび三種盛り": 198,
+　　"とろネバ三種盛り": 198,
+　　"サラダ軍艦三種盛り": 198,
+　　"サーモン三種盛り": 253,
+　　"豚塩カルビおろし盛り": 198,
+　　"サーモンおろし盛り": 198,
+　　"いか天握りおろし盛り": 198,
+　　"えび天握りおろし盛り": 198,
+　　"豚塩カルビ旨辛ネギ盛り": 198,
+　　"生ハム旨辛ネギ盛り": 198,
+　　"とろびんちょう旨辛ネギ盛り": 198,
+　　"サーモン旨辛ネギ盛り": 198,
+  　"えび旨辛ネギ盛り": 198,
+　　"アカイカ旨辛ネギ盛り": 198,
+　　"重ね中トロ": 330,
+　　"中トロ食べ比べ(中トロ・炙りゆず塩)": 330,
+　　"中トロ食べ比べ(中トロ・レアステーキ)": 330,
+　　"天然赤えび食べ比べ(赤えび・炙り塩レモン)": 330,
+　　"天然赤えび食べ比べ(赤えび・レアステーキ)": 330,
+　　"かけうどん": 264,
+　　"えびの天ぷらうどん": 374,
+　　"えびの天ぷらそば": 374,
+　　"きつねうどん": 330,
+　　"鴨うどん": 418,
+　　"鴨そば": 418,
+　　"えび天きつねうどん": 440,
+　　"えび天鴨うどん": 484,
+　　"えび天鴨そば": 484,
+　　"あさりとあおさのうどん": 418,
+　　"特製しょう油ラーメン": 440,
+  　"焼豚増量!特製しょう油ラーメン": 528,
+　　"厳選素材の貝節塩ラーメン": 440,
+　　"焼豚増量!厳選素材の貝節塩ラーメン": 528,
+　　"あおさみそ汁": 154,
+　　"あさりみそ汁": 264,
+　　"特製とん汁": 264,
+　　"焼津産かつおだしの特製茶碗蒸し": 220,
+　　"旨だしたこ焼き(6個入り)": 374,
+  　"チーズたこ焼き(6個入り)": 418,
+　　"旨だしたこ焼き(3個入り)": 220,
+　　"鶏のから揚げ(4個入り)": 374,
+    "鶏のから揚げ(2個入り)": 220,
+    "なんこつのから揚げ": 308,
+　　"カリカリポテト": 264,
+　　"MEGAカリカリポテト": 440,
+　　"カリカリポテト(バター醤油味)": 308,
+　　"MEGAカリカリポテト(バター醤油味)": 484,
+　　"チーズカリカリポテト": 330,
+    "まぐろ南蛮": 308,
+　　"旨だし厚焼きたまご": 198,
+　　"旨だし厚焼きたまごおろし添え": 264,
+　　"あさりの酒蒸し": 308,
+　　"ツナとブロッコリーのタルタルサラダ": 198,
+　　"枝豆": 132,
+　　"キムチ": 132,
+　　"濃厚ガトーショコラ": 264,
+　　"ミルクレープ": 264,
+  　"たまごプリン": 264,
+　　"コーヒーゼリー": 154,
+　　"コーヒーゼリー (バニラアイスのせ)": 220,
+  　"黒糖きなこ豆乳プリン": 220,
+　　"波照間黒糖のわらびもち": 132,
+　　"波照間黒糖のわらびもち バニラアイス添え": 198,
+　　"三色だんご": 154,
+  　"大学いも": 198,
+　　"大学いも バニラアイス添え": 198,
+　　"フレッシュパイン": 154,
+  　"は●アイス (バニラ)": 154,
+　　"は●アイス (チョコレート)": 154,
+　　"豆乳いちごアイス": 198,
+    "追加トッピングホイップ": 132,
+　　"晴雲 金勝山": 594,
+    "生ビール中ジョッキ": 594,
+    "スマイル": 1500,
+    "大切り直火焼きびんちょう": 121,
+    "漬けいか耳つつみ": 121,
+    "あわび": 198,
+    "タラバガニのふんどし": 253,
+    "大えびフライ握り": 330,
+    "大えびフライ握り(お好みソース)": 330,
+    "大えびフライ握り(タルタルソース)": 330,
+    "生本ずわいがに": 330,
+    "かに三昧": 814,
+    "特製とんこつ醤油ラーメン": 440,
+    "焼豚増量!特製とんこつラーメン": 528,
+    "特製旨辛とんこつ醤油ラーメン": 528,
+    "カリカリポテト(焦がしにんにく醤油風味)": 308,
+    "MEGAカリカリポテト(焦がしにんにく醤油風味)": 308,
+    "大えびフライ": 550,
+    "甘熟王バナナとチョコのパルフェ": 484,
+    "ブルーベリーレアチーズケーキ": 308,
+    "ティラミスケーキ": 308,
+    "冷凍ぶどう": 198,
+};
+
+const BUDGET = 1507;
+
+function isAllergyItem(name, allergies) {
+
+    // えび
+    if (
+        allergies.includes("えび") &&
+        (
+            name.includes("えび") ||
+            name.includes("エビ")
+        )
+    ) {
+        return true;
+    }
+
+    // 卵
+    if (
+        allergies.includes("たまご") &&
+        (
+            name.includes("たまご") ||
+            name.includes("ツナ") ||
+            name.includes("コーン軍艦") ||
+            name.includes("マヨ") ||
+            name.includes("プリン")
+        )
+    ) {
+        return true;
+    }
+
+    // 小麦
+    if (
+        allergies.includes("小麦") &&
+        (
+            name.includes("うどん") ||
+            name.includes("そば") ||
+            name.includes("ラーメン")
+        )
+    ) {
+        return true;
+    }
+
+    // 乳
+    if (
+        allergies.includes("乳") &&
+        (
+            name.includes("チーズ") ||
+            name.includes("アイス") ||
+            name.includes("ホイップ")
+        )
+    ) {
+        return true;
+    }
+
+ // そば
+    if (
+        allergies.includes("そば") &&
+        (
+            name.includes("そば") 
+        )
+    ) {
+        return true;
+    }
+
+ // 魚卵
+    if (
+        allergies.includes("魚卵") &&
+        (
+            name.includes("いくら") ||
+            name.includes("イクラ") ||
+            name.includes("つぶっこ") ||
+            name.includes("カリフォルニアロール")
+        )
+    ) {
+        return true;
+    }
+
+ // 軍艦
+    if (
+        allergies.includes("軍艦") &&
+        (
+            name.includes("軍艦") 
+        )
+    ) {
+        return true;
+    }
+
+ // 巻き
+    if (
+        allergies.includes("巻き") &&
+        (
+            name.includes("巻") 
+        )
+    ) {
+        return true;
+    }
+
+
+    return false;
+}
+
+function gacha() {
+
+    document.body.style.backgroundImage = woodBg;
+    document.body.style.backgroundColor = woodColor;
+
+    document.getElementById("spin").play();
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<h2>抽選中...</h2>";
+
+   const allergies = [...document.querySelectorAll(".allergy:checked")]
+    .map(el => el.value);
+
+let items = Object.entries(menu).filter(([name]) => {
+    return !isAllergyItem(name, allergies);
+});
+
+items.sort(() => Math.random() - 0.5);
+
+    let total = 0;
+    let result = [];
+
+    for (let [name, price] of items) {
+        if (total + price <= BUDGET) {
+            result.push({name, price});
+            total += price;
+        }
+    }
+
+    result.sort((a, b) => a.price - b.price);
+
+    setTimeout(() => showResult(result, total), 1000);
+}
+
+function showResult(result, total) {
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<h2>ガチャ結果</h2><ul id='list'></ul>";
+
+    const list = document.getElementById("list");
+
+    let i = 0;
+    let hasSSR = false;
+
+    function loop() {
+        if (i < result.length) {
+
+            const item = result[i];
+            const li = document.createElement("li");
+
+            let rarity = "N";
+            let style = "";
+            let isShine = false;
+
+            //  SR
+            if (item.price >= 594) {
+                rarity = "★★SSR";
+                style = "color: gold; font-weight: bold;";
+                document.getElementById("rare").play();
+                hasSSR = true;
+                isShine = true;
+　　　　　　　　li.classList.add("shine");
+ 　　　　　　   li.classList.add("drop"); 
+            }
+            //  R
+            else if (item.price >= 198) {
+                rarity = "★R";
+                style = `
+                    color: #a4a4a4;
+                    font-weight: bold;
+                    text-shadow:
+                        0 0 5px #ffffff,
+                        0 0 10px #cccccc,
+                        1px 1px 0 #666;
+                `;
+                isShine = true;
+            }
+
+            li.innerHTML = `
+                <span class="name">${item.name}</span>
+                <span class="price" style="${style}">
+                    ${item.price}円 ${rarity}
+                </span>
+            `;
+
+            if (isShine) li.classList.add("shine");
+
+            document.getElementById("item").play();
+
+            list.appendChild(li);
+
+            i++;
+            setTimeout(loop, 200);
+
+        } else {
+
+            const totalText = document.createElement("h3");
+            totalText.style.textAlign = "right";
+            totalText.style.borderTop = "2px solid #8b5a2b";
+            totalText.style.paddingTop = "10px";
+            totalText.style.marginTop = "10px";
+            totalText.textContent = `合計：${total}円`;
+
+            resultDiv.appendChild(totalText);
+
+            if (hasSSR) {
+                document.body.style.backgroundImage = "linear-gradient(45deg, gold, orange)";
+                const msg = document.createElement("h2");
+                msg.textContent = "🎉 SSR獲得！";
+                msg.style.color = "gold";
+                resultDiv.appendChild(msg);
+            } else {
+                document.body.style.backgroundImage = woodBg;
+                document.body.style.backgroundColor = woodColor;
+            }
+        }
+    }
+
+    loop();
+}
+
+</script>
+
+</body>
+</html>
