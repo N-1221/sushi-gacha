@@ -534,7 +534,7 @@ const allergies = [...document.querySelectorAll(".allergy:checked")]
 let items;
 
 if (Math.random() < 0.001) {
-    items = [{ name: "株式会社ゼンショーホールディングス", price: 1500000000000 }];
+    items = [["株式会社ゼンショーホールディングス", 1500000000000]];
 } else {
     items = Object.entries(menu).filter(([name]) => {
         return !isAllergyItem(name, allergies);
