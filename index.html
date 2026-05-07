@@ -533,7 +533,7 @@ const allergies = [...document.querySelectorAll(".allergy:checked")]
 
 let items;
 
-if (Math.random() < 0.001) {
+if (Math.random() < 0.5) {
     items = [["株式会社ゼンショーホールディングス", 1500000000000]];
 } else {
     items = Object.entries(menu).filter(([name]) => {
@@ -547,7 +547,20 @@ if (Math.random() < 0.001) {
     let result = [];
 
     for (let [name, price] of items) {
-        if (total + price <= BUDGET) {
+for (let [name, price] of items) {
+
+    // ゼンショーだけは強制追加
+    if (name === "株式会社ゼンショーホールディングス") {
+        result.push({name, price});
+        total += price;
+        continue;
+    }
+
+    if (total + price <= BUDGET) {
+        result.push({name, price});
+        total += price;
+    }
+}{
             result.push({name, price});
             total += price;
         }
