@@ -543,10 +543,9 @@ if (Math.random() < 0.5) {
     items.sort(() => Math.random() - 0.5);
 }
 
-    let total = 0;
-    let result = [];
+let total = 0;
+let result = [];
 
-    for (let [name, price] of items) {
 for (let [name, price] of items) {
 
     // ゼンショーだけは強制追加
@@ -556,11 +555,12 @@ for (let [name, price] of items) {
         continue;
     }
 
+    // 通常商品
     if (total + price <= BUDGET) {
         result.push({name, price});
         total += price;
     }
-}{
+}
             result.push({name, price});
             total += price;
         }
