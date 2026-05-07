@@ -561,14 +561,10 @@ for (let [name, price] of items) {
         total += price;
     }
 }
-            result.push({name, price});
-            total += price;
-        }
-    }
 
-    result.sort((a, b) => a.price - b.price);
+result.sort((a, b) => a.price - b.price);
 
-    setTimeout(() => showResult(result, total), 1000);
+setTimeout(() => showResult(result, total), 1000);
 }
 
 function showResult(result, total) {
