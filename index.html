@@ -532,7 +532,7 @@ const allergies = [...document.querySelectorAll(".allergy:checked")]
 
 let items;
 
-if (Math.random() < 0.001) {
+if (Math.random() < 0.5) {
     items = [["株式会社ゼンショーホールディングス", 1500000000000]];
 } else {
     items = Object.entries(menu).filter(([name]) => {
@@ -632,7 +632,7 @@ function showResult(result, total) {
             totalText.style.borderTop = "2px solid #8b5a2b";
             totalText.style.paddingTop = "10px";
             totalText.style.marginTop = "10px";
-            totalText.textContent = `合計：${total}円`;
+            totalText.textContent = `合計：${total.toLocaleString()}円`;
 
             resultDiv.appendChild(totalText);
 
