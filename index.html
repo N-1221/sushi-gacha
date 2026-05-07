@@ -344,8 +344,8 @@ const menu = {
 　　"焼豚増量!厳選素材の貝節塩ラーメン": 528,
 　　"あおさみそ汁": 154,
 　　"あさりみそ汁": 264,
-　　"特製とん汁": 264,
-　　"焼津産かつおだしの特製茶碗蒸し": 220,
+　　"とん汁": 264,
+　　"茶碗蒸し": 220,
 　　"旨だしたこ焼き(6個入り)": 374,
   　"チーズたこ焼き(6個入り)": 418,
 　　"旨だしたこ焼き(3個入り)": 220,
@@ -370,8 +370,8 @@ const menu = {
 　　"コーヒーゼリー": 154,
 　　"コーヒーゼリー (バニラアイスのせ)": 220,
   　"黒糖きなこ豆乳プリン": 220,
-　　"波照間黒糖のわらびもち": 132,
-　　"波照間黒糖のわらびもち バニラアイス添え": 198,
+　　"黒糖のわらびもち": 132,
+　　"黒糖のわらびもち バニラアイス添え": 198,
 　　"三色だんご": 154,
   　"大学いも": 198,
 　　"大学いも バニラアイス添え": 198,
@@ -427,6 +427,10 @@ function isAllergyItem(name, allergies) {
             name.includes("ツナ") ||
             name.includes("コーン軍艦") ||
             name.includes("マヨ") ||
+            name.includes("タルタル") ||
+            name.includes("ケーキ") ||
+            name.includes("ガトーショコラ") ||
+            name.includes("ミルクレープ") ||
             name.includes("プリン")
         )
     ) {
@@ -439,6 +443,8 @@ function isAllergyItem(name, allergies) {
         (
             name.includes("うどん") ||
             name.includes("そば") ||
+            name.includes("天") ||
+            name.includes("フライ") ||
             name.includes("ラーメン")
         )
     ) {
@@ -451,6 +457,10 @@ function isAllergyItem(name, allergies) {
         (
             name.includes("チーズ") ||
             name.includes("アイス") ||
+            name.includes("ガトーショコラ") ||
+            name.includes("ミルクレープ") ||
+            name.includes("ケーキ") ||
+            name.includes("チーズ") ||
             name.includes("ホイップ")
         )
     ) {
@@ -474,6 +484,7 @@ function isAllergyItem(name, allergies) {
             name.includes("いくら") ||
             name.includes("イクラ") ||
             name.includes("つぶっこ") ||
+            name.includes("たら") ||
             name.includes("カリフォルニアロール")
         )
     ) {
