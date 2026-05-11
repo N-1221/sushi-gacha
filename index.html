@@ -170,9 +170,14 @@ button:hover { background: #005fa3; }
         巻き
     </label>
 
-　  <label>
+    <label>
         <input type="checkbox" value="アルコール" class="allergy">
         アルコール
+    </label>
+
+    <label>
+        <input type="checkbox" value="追加トッピング" class="allergy">
+        追加トッピング
     </label>
 
 </div>
@@ -382,8 +387,8 @@ const menu = {
   　"は●アイス (バニラ)": 154,
 　　"は●アイス (チョコレート)": 154,
 　　"豆乳いちごアイス": 198,
-    "追加トッピングホイップ": 132,
-    "追加トッピングホイップ": 132,
+    "追加トッピング大根おろし": 132,
+    "追加トッピング旨辛ネギ": 132,
     "追加トッピングホイップ": 132, 
 　  "生ビール中ジョッキ": 594,
     "生ビール小ジョッキ": 374,
@@ -460,7 +465,6 @@ function isAllergyItem(name, allergies) {
         (
             name.includes("うどん") ||
             name.includes("そば") ||
-            name.includes("天") ||
             name.includes("フライ") ||
             name.includes("たこ焼き") ||
             name.includes("ラーメン")
@@ -543,6 +547,17 @@ function isAllergyItem(name, allergies) {
     ) {
         return true;
     }
+
+// 追加トッピング
+    if (
+        allergies.includes("追加トッピング") &&
+        (
+            name.includes("追加トッピング") 
+        )
+    ) {
+        return true;
+    }
+    
     return false;
 }
 
