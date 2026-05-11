@@ -381,6 +381,11 @@ const menu = {
     "追加トッピングホイップ": 132,
 　　"晴雲 金勝山": 594,
     "生ビール中ジョッキ": 594,
+    "生ビール小ジョッキ": 374,
+    "ノンアルコールビール": 418,
+    "レモンサワー": 440,
+    "グレープフルーツサワー": 440,
+    "ブラックニッカハイボール": 440,
     "スマイル": 1500,
     "大切り直火焼きびんちょう": 121,
     "漬けいか耳つつみ": 121,
@@ -533,7 +538,7 @@ const allergies = [...document.querySelectorAll(".allergy:checked")]
 let items;
 
 if (Math.random() < 0.001) {
-    items = [["株式会社ゼンショーホールディングス", 1500000000000]];
+    items = [["株式会社ゼ●ショーホールディングス", 1500000000000]];
 } else {
     items = Object.entries(menu).filter(([name]) => {
         return !isAllergyItem(name, allergies);
@@ -548,7 +553,7 @@ let result = [];
 for (let [name, price] of items) {
 
     // ゼンショーだけは強制追加
-    if (name === "株式会社ゼンショーホールディングス") {
+    if (name === "株式会社ゼ●ショーホールディングス") {
         result.push({name, price});
         total += price;
         continue;
