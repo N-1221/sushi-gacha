@@ -668,11 +668,9 @@ if (item.price >= 1000000000) {
 
     li.classList.add("shine");
 
-    // 虹背景
     document.body.style.background =
         "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
 
-    // 特別メッセージ
     const godMsg = document.createElement("h1");
 
     godMsg.innerHTML = "☢ 株式会社ゼ●ショーホールディングス降臨 ☢";
@@ -688,9 +686,9 @@ if (item.price >= 1000000000) {
 
     resultDiv.prepend(godMsg);
 }
-            
-           // SSSR（虹）
-if (item.price >= 1500) {
+
+// ↓ここ重要！！
+else if (item.price >= 1500) {
     rarity = "✦SSSR";
     style = `
         font-weight: bold;
