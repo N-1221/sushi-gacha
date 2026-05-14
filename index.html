@@ -628,147 +628,92 @@ function showResult(result, total) {
             let style = "";
             let isShine = false;
 
+const desertNames = [
+    "濃厚ガトーショコラ","ミルクレープ","たまごプリン","コーヒーゼリー",
+    "コーヒーゼリー (バニラアイスのせ)","黒糖きなこ豆乳プリン","黒糖のわらびもち",
+    "黒糖のわらびもち バニラアイス添え","三色だんご","大学いも",
+    "大学いも バニラアイス添え","フレッシュパイン","は●アイス (バニラ)",
+    "は●アイス (チョコレート)","豆乳いちごアイス","ティラミスケーキ",
+    "白桃フロマージュパルフェ","キャラメルモンブラン","完熟マンゴー"
+];
+
+const hotNames = [
+    "かけうどん","えびの天ぷらうどん","えびの天ぷらそば","きつねうどん",
+    "鴨うどん","鴨そば","えび天きつねうどん","えび天鴨うどん","えび天鴨そば",
+    "あさりとあおさのうどん","しょう油ラーメン","焼豚増量!しょう油ラーメン",
+    "貝節塩ラーメン","焼豚増量!貝節塩ラーメン","味噌ラーメン","焼豚増量!味噌ラーメン",
+    "辛味噌担々麺","旨だしたこ焼き(6個入り)","チーズたこ焼き(6個入り)",
+    "旨だしたこ焼き(3個入り)","鶏のから揚げ(4個入り)","鶏のから揚げ(2個入り)",
+    "なんこつのから揚げ","カリカリポテト","MEGAカリカリポテト",
+    "カリカリポテト(バター醤油味)","MEGAカリカリポテト(バター醤油味)",
+    "チーズカリカリポテト","北海道十勝コーンコロッケ","北海道十勝コーンコロッケ(ソース付き)",
+    "いか天握り","いか天握りガーリックマヨ","えび天握り",
+    "いか天握りおろし盛り","えび天握りおろし盛り","かき揚げ握り"
+];
+
 // GOD（超特別）
 if (item.price >= 1000000000) {
-
     rarity = "☢ GOD";
-
     style = `
         font-weight: bold;
         font-size: 24px;
-
         background: linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
-
         background-size: 400% 400%;
-
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-
-        text-shadow:
-            0 0 10px white,
-            0 0 20px cyan,
-            0 0 40px magenta,
-            0 0 80px red;
+        text-shadow: 0 0 10px white, 0 0 20px cyan, 0 0 40px magenta, 0 0 80px red;
     `;
-
-    document.getElementById("rare").play();
-
-    hasSSR = true;
-    isShine = true;
-
-    li.classList.add("shine");
-
-document.body.style.backgroundImage =
-    "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
-
-   if (!document.getElementById("godTitle")) {
-
-    const godMsg = document.createElement("h1");
-
-    godMsg.id = "godTitle";
-
-    godMsg.innerHTML =
-        "株式会社ゼ●ショーホールディングス降臨";
-
-    godMsg.style.fontSize = "40px";
-    godMsg.style.color = "white";
-
-    godMsg.style.textShadow = `
-        0 0 10px red,
-        0 0 20px yellow,
-        0 0 40px cyan
-    `;
-
-    resultDiv.prepend(godMsg);
-    }
-}
-// ↓ここ重要！！
-else if (item.price >= 1500) {
-    rarity = "✦SSSR";
-    style = `
-        font-weight: bold;
-        background: linear-gradient(90deg,
-            red, orange, yellow, green, cyan, blue, violet);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 20px;
-        text-shadow:
-            0 0 8px white,
-            0 0 15px cyan,
-            0 0 25px magenta;
-    `;
-
     document.getElementById("rare").play();
     hasSSR = true;
     isShine = true;
     li.classList.add("shine");
-
-    // 虹背景
     document.body.style.backgroundImage =
         "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+    if (!document.getElementById("godTitle")) {
+        const godMsg = document.createElement("h1");
+        godMsg.id = "godTitle";
+        godMsg.innerHTML = "株式会社ゼ●ショーホールディングス降臨";
+        godMsg.style.fontSize = "40px";
+        godMsg.style.color = "white";
+        godMsg.style.textShadow = "0 0 10px red, 0 0 20px yellow, 0 0 40px cyan";
+        resultDiv.prepend(godMsg);
+    }
 }
-
-// SSR（金）
-else if (item.price >= 528) {
-    rarity = "★★SSR";
-
+// デザート → ピンク
+else if (desertNames.includes(item.name)) {
+    rarity = "🍰";
     style = `
-        color: gold;
+        color: #ff69b4;
         font-weight: bold;
-        text-shadow:
-            0 0 5px #fff4a3,
-            0 0 10px gold,
-            0 0 20px orange;
+        text-shadow: 0 0 6px #ffb6c1;
     `;
-
-    document.getElementById("rare").play();
-    hasSSR = true;
-    isShine = true;
-    li.classList.add("shine");
 }
-
-// SR（銀）
+// ラーメン・揚げ物 → 黄色
+else if (hotNames.includes(item.name)) {
+    rarity = "🍜";
+    style = `
+        color: #f5c300;
+        font-weight: bold;
+        text-shadow: 0 0 6px #ffe066;
+    `;
+}
+// 高い皿（300円〜）→ 白銀
 else if (item.price >= 300) {
-    rarity = "◆SR";
-
-style = `
-    font-weight: bold;
-
-    background: linear-gradient(
-        180deg,
-        #ffffff 0%,
-        #d9d9d9 25%,
-        #9e9e9e 50%,
-        #e5e5e5 75%,
-        #7a7a7a 100%
-    );
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    text-shadow:
-        1px 1px 0 #444,
-        2px 2px 0 #222;
-
-    letter-spacing: 1px;
-`;
-
-    isShine = true;
-}
-
-// R（銅）
-else if (item.price >= 198) {
-    rarity = "★R";
-
+    rarity = "◆";
     style = `
-        color: #cd7f32;
         font-weight: bold;
-        text-shadow:
-            0 0 5px #ffd6a0,
-            0 0 10px #cd7f32;
+        background: linear-gradient(180deg,
+            #ffffff 0%, #d9d9d9 25%, #9e9e9e 50%, #e5e5e5 75%, #7a7a7a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 1px 1px 0 #444, 2px 2px 0 #222;
+        letter-spacing: 1px;
     `;
-
-    isShine = true;
+}
+// 普通の皿（〜299円）→ 黒
+else {
+    rarity = "";
+    style = `color: #111; font-weight: normal;`;
 }
 
             li.innerHTML = `
