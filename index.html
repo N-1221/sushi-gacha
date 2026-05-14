@@ -701,18 +701,8 @@ else if (hotNames.includes(item.name)) {
 else if (item.price >= 300) {
     rarity = "★R";
     style = `
+        color: #f5c300;
         font-weight: bold;
-        background: linear-gradient(180deg,
-            #ffffff 0%,
-            #fdfdfd 15%,
-            #f2f2f2 35%,
-            #e8e8e8 50%,
-            #f7f7f7 70%,
-            #dcdcdc 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 1px 1px 0 #444, 2px 2px 0 #222;
-        letter-spacing: 1px;
     `;
 }
 // 普通の皿（〜299円）→ 黒
