@@ -610,7 +610,25 @@ setTimeout(() => showResult(result, total), 1000);
 
 function showResult(result, total) {
 
-    // 超特別演出
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<h2>ガチャ結果</h2><ul id='list'></ul>";
+
+    const list = document.getElementById("list");
+
+    let i = 0;
+    let hasSSR = false;
+
+    function loop() {
+        if (i < result.length) {
+
+            const item = result[i];
+            const li = document.createElement("li");
+
+            let rarity = "N";
+            let style = "";
+            let isShine = false;
+
+// GOD（超特別）
 if (item.price >= 1000000000) {
 
     rarity = "☢ GOD";
@@ -643,20 +661,16 @@ if (item.price >= 1000000000) {
             0 0 80px red;
     `;
 
+    document.getElementById("rare").play();
+
     hasSSR = true;
     isShine = true;
 
     li.classList.add("shine");
 
-    // 背景
+    // 虹背景
     document.body.style.background =
         "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
-
-    // 画面揺れ
-    document.body.style.animation = "shake 0.2s infinite";
-
-    // 爆音SE
-    document.getElementById("rare").play();
 
     // 特別メッセージ
     const godMsg = document.createElement("h1");
@@ -665,6 +679,7 @@ if (item.price >= 1000000000) {
 
     godMsg.style.fontSize = "40px";
     godMsg.style.color = "white";
+
     godMsg.style.textShadow = `
         0 0 10px red,
         0 0 20px yellow,
@@ -673,25 +688,7 @@ if (item.price >= 1000000000) {
 
     resultDiv.prepend(godMsg);
 }
-
-    const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = "<h2>ガチャ結果</h2><ul id='list'></ul>";
-
-    const list = document.getElementById("list");
-
-    let i = 0;
-    let hasSSR = false;
-
-    function loop() {
-        if (i < result.length) {
-
-            const item = result[i];
-            const li = document.createElement("li");
-
-            let rarity = "N";
-            let style = "";
-            let isShine = false;
-
+            
            // SSSR（虹）
 if (item.price >= 1500) {
     rarity = "✦SSSR";
