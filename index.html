@@ -66,9 +66,11 @@ button:hover { background: #005fa3; }
 
 /* ✨ キラーン */
 @keyframes shine {
-    0% { filter: brightness(1); transform: scale(1); }
-    50% { filter: brightness(2.5); transform: scale(1.15); }
-    100% { filter: brightness(1); transform: scale(1); }
+    0% { transform: translate(2px, 2px) rotate(0deg); }
+    25% { transform: translate(-2px, 2px) rotate(-1deg); }
+    50% { transform: translate(2px, -2px) rotate(1deg); }
+    75% { transform: translate(-2px, -2px) rotate(0deg); }
+    100% { transform: translate(2px, 2px) rotate(1deg); }
 }
 
 .shine {
@@ -608,6 +610,70 @@ setTimeout(() => showResult(result, total), 1000);
 
 function showResult(result, total) {
 
+    // 超特別演出
+if (item.price >= 1000000000) {
+
+    rarity = "☢ GOD";
+
+    style = `
+        font-weight: bold;
+        font-size: 24px;
+
+        background: linear-gradient(
+            90deg,
+            red,
+            orange,
+            yellow,
+            lime,
+            cyan,
+            blue,
+            violet,
+            red
+        );
+
+        background-size: 400% 400%;
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        text-shadow:
+            0 0 10px white,
+            0 0 20px cyan,
+            0 0 40px magenta,
+            0 0 80px red;
+    `;
+
+    hasSSR = true;
+    isShine = true;
+
+    li.classList.add("shine");
+
+    // 背景
+    document.body.style.background =
+        "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+
+    // 画面揺れ
+    document.body.style.animation = "shake 0.2s infinite";
+
+    // 爆音SE
+    document.getElementById("rare").play();
+
+    // 特別メッセージ
+    const godMsg = document.createElement("h1");
+
+    godMsg.innerHTML = "☢ 株式会社ゼ●ショーホールディングス降臨 ☢";
+
+    godMsg.style.fontSize = "40px";
+    godMsg.style.color = "white";
+    godMsg.style.textShadow = `
+        0 0 10px red,
+        0 0 20px yellow,
+        0 0 40px cyan
+    `;
+
+    resultDiv.prepend(godMsg);
+}
+
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "<h2>ガチャ結果</h2><ul id='list'></ul>";
 
@@ -626,28 +692,81 @@ function showResult(result, total) {
             let style = "";
             let isShine = false;
 
-            //  SR
-            if (item.price >= 528) {
-                rarity = "★★SSR";
-                style = "color: gold; font-weight: bold;";
-                document.getElementById("rare").play();
-                hasSSR = true;
-                isShine = true;
-                li.classList.add("shine");
-            }
-            //  R
-            else if (item.price >= 198) {
-                rarity = "★R";
-                style = `
-                    color: #a4a4a4;
-                    font-weight: bold;
-                    text-shadow:
-                        0 0 5px #ffffff,
-                        0 0 10px #cccccc,
-                        1px 1px 0 #666;
-                `;
-                isShine = true;
-            }
+           // SSSR（虹）
+if (item.price >= 1500) {
+    rarity = "✦SSSR";
+    style = `
+        font-weight: bold;
+        background: linear-gradient(90deg,
+            red, orange, yellow, green, cyan, blue, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 20px;
+        text-shadow:
+            0 0 8px white,
+            0 0 15px cyan,
+            0 0 25px magenta;
+    `;
+
+    document.getElementById("rare").play();
+    hasSSR = true;
+    isShine = true;
+    li.classList.add("shine");
+
+    // 虹背景
+    document.body.style.backgroundImage =
+        "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+}
+
+// SSR（金）
+else if (item.price >= 528) {
+    rarity = "★★SSR";
+
+    style = `
+        color: gold;
+        font-weight: bold;
+        text-shadow:
+            0 0 5px #fff4a3,
+            0 0 10px gold,
+            0 0 20px orange;
+    `;
+
+    document.getElementById("rare").play();
+    hasSSR = true;
+    isShine = true;
+    li.classList.add("shine");
+}
+
+// SR（銀）
+else if (item.price >= 300) {
+    rarity = "◆SR";
+
+    style = `
+        color: silver;
+        font-weight: bold;
+        text-shadow:
+            0 0 5px white,
+            0 0 10px #d9d9d9,
+            0 0 20px gray;
+    `;
+
+    isShine = true;
+}
+
+// R（銅）
+else if (item.price >= 198) {
+    rarity = "★R";
+
+    style = `
+        color: #cd7f32;
+        font-weight: bold;
+        text-shadow:
+            0 0 5px #ffd6a0,
+            0 0 10px #cd7f32;
+    `;
+
+    isShine = true;
+}
 
             li.innerHTML = `
                 <span class="name">${item.name}</span>
