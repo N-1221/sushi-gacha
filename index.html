@@ -574,7 +574,7 @@ const allergies = [...document.querySelectorAll(".allergy:checked")]
 
 let items;
 
-if (Math.random() < 0.001) {
+if (Math.random() < 0.5) {
     items = [["株式会社ゼ●ショーホールディングス", 1500000000000]];
 } else {
     items = Object.entries(menu).filter(([name]) => {
@@ -741,14 +741,18 @@ else if (item.price >= 528) {
 else if (item.price >= 300) {
     rarity = "◆SR";
 
-    style = `
-        color: silver;
-        font-weight: bold;
-        text-shadow:
-            0 0 5px white,
-            0 0 10px #d9d9d9,
-            0 0 20px gray;
-    `;
+style = `
+    color: #c0c0c0;
+    font-weight: bold;
+
+    text-shadow:
+        1px 1px 0 #555,
+        0 0 5px white,
+        0 0 10px #999,
+        0 0 18px #666;
+
+    letter-spacing: 1px;
+`;
 
     isShine = true;
 }
