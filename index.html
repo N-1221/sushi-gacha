@@ -431,6 +431,8 @@ const menu = {
 
 const BUDGET = 1507;
 
+let isRolling = false;    
+
 function isAllergyItem(name, allergies) {
 
     // えび
@@ -553,6 +555,9 @@ function isAllergyItem(name, allergies) {
 }
 
 function gacha() {
+    if (isRolling) return;
+    isRolling = true;
+    
 
     document.body.style.backgroundImage = woodBg;
     document.body.style.backgroundColor = woodColor;
@@ -681,6 +686,7 @@ function showResult(result, total) {
                 document.body.style.backgroundImage = woodBg;
                 document.body.style.backgroundColor = woodColor;
             }
+             isRolling = false;
         }
     }
 
