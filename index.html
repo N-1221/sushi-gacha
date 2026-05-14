@@ -668,12 +668,17 @@ if (item.price >= 1000000000) {
 
     li.classList.add("shine");
 
-    document.body.style.background =
-        "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+document.body.style.backgroundImage =
+    "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+
+   if (!document.getElementById("godTitle")) {
 
     const godMsg = document.createElement("h1");
 
-    godMsg.innerHTML = "☢ 株式会社ゼ●ショーホールディングス降臨 ☢";
+    godMsg.id = "godTitle";
+
+    godMsg.innerHTML =
+        "☢ 株式会社ゼ●ショーホールディングス降臨 ☢";
 
     godMsg.style.fontSize = "40px";
     godMsg.style.color = "white";
