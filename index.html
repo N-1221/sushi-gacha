@@ -681,7 +681,7 @@ if (item.price >= 1000000000) {
 }
 // デザート → ピンク
 else if (desertNames.includes(item.name)) {
-    rarity = "🍰";
+    rarity = "★R";
     style = `
         color: #ff69b4;
         font-weight: bold;
@@ -690,7 +690,7 @@ else if (desertNames.includes(item.name)) {
 }
 // ラーメン・揚げ物 → 黄色
 else if (hotNames.includes(item.name)) {
-    rarity = "🍜";
+    rarity = "★★SR";
     style = `
         color: #f5c300;
         font-weight: bold;
@@ -699,7 +699,7 @@ else if (hotNames.includes(item.name)) {
 }
 // 高い皿（300円〜）→ 白銀
 else if (item.price >= 300) {
-    rarity = "◆";
+    rarity = "★R";
     style = `
         font-weight: bold;
         background: linear-gradient(180deg,
@@ -712,7 +712,7 @@ else if (item.price >= 300) {
 }
 // 普通の皿（〜299円）→ 黒
 else {
-    rarity = "";
+    rarity = "N";
     style = `color: #111; font-weight: normal;`;
 }
 
