@@ -182,6 +182,11 @@ button:hover { background: #005fa3; }
         追加トッピング
     </label>
 
+    <label>
+        <input type="checkbox" value="高価皿" class="allergy">
+        高価皿
+    </label>
+    
 </div>
 
 <div id="result"></div>
@@ -433,6 +438,22 @@ const menu = {
 
 const BUDGET = 1507;
 
+    const ginzaraNames = [
+    "中トロ",
+    "重ね中トロ",
+    "中トロ食べ比べ(中トロ・炙りゆず塩)",
+    "中トロ食べ比べ(中トロ・レアステーキ)",
+    "天然赤えび",
+    "天然赤えび塩レモン",
+    "炙り天然赤えび塩レモン",
+    "天然赤えびレアステーキ",
+    "天然赤えび食べ比べ(赤えび・炙り塩レモン)",
+    "天然赤えび食べ比べ(赤えび・レアステーキ)",
+    "うに軍艦",
+    "うにいくら軍艦",
+    "大判黒毛和牛"
+];
+
 let isRolling = false;
 
 function isAllergyItem(name, allergies) {
@@ -556,6 +577,16 @@ function isAllergyItem(name, allergies) {
     return false;
 }
 
+// 高価皿
+if (
+    allergies.includes("高価皿") &&
+    (
+        ginzaraNames.includes(name)
+    )
+) {
+    return true;
+}
+    
 function gacha() {
     if (isRolling) return;
     isRolling = true;
@@ -677,22 +708,6 @@ const friedNames = [
     "いか天握りおろし盛り",
     "えび天握りおろし盛り",
     "かき揚げ握り"
-];
-
-const ginzaraNames = [
-    "中トロ",
-    "重ね中トロ",
-    "中トロ食べ比べ(中トロ・炙りゆず塩)",
-    "中トロ食べ比べ(中トロ・レアステーキ)",
-    "天然赤えび",
-    "天然赤えび塩レモン",
-    "炙り天然赤えび塩レモン",
-    "天然赤えびレアステーキ",
-    "天然赤えび食べ比べ(赤えび・炙り塩レモン)",
-    "天然赤えび食べ比べ(赤えび・レアステーキ)",
-    "うに軍艦",
-    "うにいくら軍艦",
-    "大判黒毛和牛"
 ];
 
 // GOD（超特別）
