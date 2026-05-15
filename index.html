@@ -186,7 +186,7 @@ const menu = {
     "追加トッピング旨辛ネギ": 132, "追加トッピングホイップ": 132, "生ビール中ジョッキ": 594, "生ビール小ジョッキ": 374,
     "ノンアルコールビール": 418, "レモンサワー": 440, "グレープフルーツサワー": 440, "ブラックニッカハイボール": 440,
     "晴雲 金勝山": 594, "芋焼酎薩摩宝山(お湯割り)": 418, "芋焼酎薩摩宝山(水割り)": 418, "芋焼酎薩摩宝山(ロック)": 418,
-    "麦焼酎白水(お湯割り)": 418, "麦焼酎白水(水割り)": 418, "麦焼酎白水(ロック)": 418, "スマイル": 1500,
+    "麦焼酎白水(お湯割り)": 418, "麦焼酎白水(水割り)": 418, "麦焼酎白水(ロック)": 418, "スマイル(^_^)": 1500,
     "ティラミスケーキ": 308, "にしんの酢〆": 121, "かき揚げ握り": 121, "七上かつお": 198, "釜揚げしらす軍艦": 198,
     "しらす軍艦食べ比べ": 198, "アカイカうに和えつつみ": 198, "甘エビ(5尾のせ)": 330, "活〆しまあじ": 330,
     "活〆しまあじ(塩レモン)": 330, "大判黒毛和牛": 440, "七上かつお(岩塩ガーリックオニオン)": 253,
@@ -256,14 +256,14 @@ function gacha() {
     document.getElementById("spin").play();
 
     const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = "<h2>抽選中...</h2>";
+    resultDiv.innerHTML = "<h2>注文中...</h2>";
 
     const allergies = [...document.querySelectorAll(".allergy:checked")].map(el => el.value);
 
     let items;
 
     if (Math.random() < 0.001) {
-        items = [["株式会社ゼ●ショーホールディングス", 1500000000000]];
+        items = [["株式会社ゼ〇ショーホールディングス", 1500000000000]];
     } else {
         items = Object.entries(menu).filter(([name]) => {
             return !isAllergyItem(name, allergies);
@@ -299,7 +299,7 @@ function gacha() {
 
 function showResult(result, total) {
     const resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = "<h2>ガチャ結果</h2><ul id='list'></ul>";
+    resultDiv.innerHTML = "<h2>今日のメニュー</h2><ul id='list'></ul>";
 
     const list = document.getElementById("list");
 
@@ -340,6 +340,10 @@ function showResult(result, total) {
                 "えび天握りおろし盛り","かき揚げ握り"
             ];
 
+            const smileNames = [
+ 　　　　　　"スマイル"
+            ];
+            
             if (item.price >= 1000000000) {
                 rarity = "GOD";
                 style = `
@@ -366,6 +370,10 @@ function showResult(result, total) {
                     godMsg.style.textShadow = "0 0 10px red, 0 0 20px yellow, 0 0 40px cyan";
                     resultDiv.prepend(godMsg);
                 }
+            }
+            else if (smileNames.includes(item.name)) {
+                rarity = "★SSSR";
+                style = "color: #ff9900; font-weight: bold; text-shadow: 0 0 8px #ffd27f;";
             }
             else if (desertNames.includes(item.name)) {
                 rarity = "★R";
@@ -412,10 +420,10 @@ function showResult(result, total) {
 
             resultDiv.appendChild(totalText);
 
-            if (hasSSR) {
+            if (hasSSSR) {
                 document.body.style.backgroundImage = "linear-gradient(45deg, orange, yellow )";
                 const msg = document.createElement("h2");
-                msg.textContent = "🎉 SSR獲得！";
+                msg.textContent = "🎉 SSSR獲得！";
                 msg.style.color = "gold";
                 resultDiv.appendChild(msg);
             } else {
