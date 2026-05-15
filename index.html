@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>回転寿司1500円ガチャ</title>
+<title>回転寿司ガチャ</title>
 
 <style>
 body {
@@ -15,6 +15,30 @@ body {
     transition: 0.5s;
 }
 h1 { color: #0078d7; }
+
+/* 予算設定エリアのスタイル */
+.budget-box {
+    margin: 15px auto;
+    background: rgba(255,255,255,0.85);
+    width: fit-content;
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 2px solid #8b5a2b;
+}
+.budget-box label {
+    font-weight: bold;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 8px;
+}
+.budget-slider {
+    width: 250px;
+    margin: 5px 0;
+}
+#budgetText {
+    color: #d32f2f;
+    font-size: 20px;
+}
 
 button {
     padding: 12px 24px;
@@ -108,7 +132,12 @@ button:hover { background: #005fa3; }
 
 <body>
 
-<h1>回転寿司1500円ガチャ</h1>
+<h1>回転寿司ガチャ</h1>
+
+<div class="budget-box">
+    <label>設定金額: <span id="budgetText">1500</span>円</label>
+    <input type="range" id="budgetInput" class="budget-slider" min="0" max="3000" step="100" value="1500" oninput="updateBudget(this.value)">
+</div>
 
 <button onclick="gacha()">ガチャを回す</button>
 
@@ -193,7 +222,8 @@ const menu = {
     "完熟マンゴー": 308
 };
 
-const BUDGET = 1507;
+// 修正：初期予算を設定。少し余裕を持たせるため、選択されたスライダー値に端数(+7円)を足して判定します
+let currentBudget = 1500;
 
 const ginzaraNames = [
     "中トロ", "重ね中トロ", "中トロ食べ比べ(中トロ・炙りゆず塩)", "中トロ食べ比べ(中トロ・レアステーキ)",
@@ -204,9 +234,13 @@ const ginzaraNames = [
 
 let isRolling = false;
 
-function isAllergyItem(name, allergies) {
-    // 修正：えび、たまご、乳の判定ロジックを削除
+// 追加：スライダーを動かしたときに数値を書き換える関数
+function updateBudget(val) {
+    currentBudget = parseInt(val);
+    document.getElementById("budgetText").textContent = currentBudget.toLocaleString();
+}
 
+function isAllergyItem(name, allergies) {
     if (allergies.includes("そば") && (name.includes("そば") || name.includes("スマイル"))) return true;
 
     if (allergies.includes("魚卵") && (
@@ -262,6 +296,9 @@ function gacha() {
 
     let total = 0;
     let result = [];
+    
+    // 121円などの端数に対応するため、スライダー値に+7円のバッファを持たせます
+    const maxLimit = currentBudget + 7; 
 
     for (let [name, price] of items) {
         if (name === "株式会社ゼ〇ショーホールディングス") {
@@ -270,7 +307,7 @@ function gacha() {
             continue;
         }
 
-        if (total + price <= BUDGET) {
+        if (total + price <= maxLimit) {
             result.push({name, price});
             total += price;
         }
