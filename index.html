@@ -66,10 +66,11 @@ button:hover { background: #005fa3; }
     border: 3px solid #8b5a2b;
 }
 
-/* 左：名前 / 右：値段 */
+/* 左：名前 / 右：値段とレアリティ */
 #list li {
     display: flex;
     justify-content: space-between;
+    align-items: center; /* 縦方向の中央揃え */
     border-bottom: 1px dashed #ccc;
     padding: 6px 0;
 }
@@ -77,13 +78,24 @@ button:hover { background: #005fa3; }
 .name {
     text-align: left;
     word-break: break-word;
-    width: 70%;
+    width: 60%;
 }
 
+/* 金額とレアリティの親要素をFlexボックス化して綺麗に並べる */
 .price {
-    text-align: right;
-    min-width: 140px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 180px; /* 少し幅を広げて余裕を持たせました */
     font-weight: bold;
+    text-align: right;
+}
+
+/* レアリティ部分の幅を固定して右揃えにする */
+.rarity {
+    display: inline-block;
+    width: 65px;
+    text-align: right;
 }
 
 /* ✨ キラーン */
@@ -125,7 +137,8 @@ button:hover { background: #005fa3; }
     h1 { font-size: 26px; }
     button { font-size: 20px; padding: 14px; }
     #list li { font-size: 14px; gap: 10px; }
-    .price { min-width: 90px; font-size: 13px; }
+    .price { min-width: 140px; font-size: 13px; }
+    .rarity { width: 50px; }
 }
 </style>
 </head>
@@ -324,7 +337,7 @@ function showResult(result, total) {
             const item = result[i];
             const li = document.createElement("li");
 
-            let rarity = "  N";
+            let rarity = "N";
             let style = "";
             let isShine = false;
 
@@ -407,10 +420,12 @@ function showResult(result, total) {
                 style = "color: #111; font-weight: normal;";
             }
 
+            // 【修正箇所】金額とレアリティを別々のspanに分け、綺麗に揃うように変更
             li.innerHTML = `
                 <span class="name">${item.name}</span>
                 <span class="price" style="${style}">
-                    ${item.price.toLocaleString()}円 ${rarity}
+                    <span>${item.price.toLocaleString()}円</span>
+                    <span class="rarity">${rarity}</span>
                 </span>
             `;
 
