@@ -222,7 +222,6 @@ const menu = {
     "完熟マンゴー": 308
 };
 
-// 修正：初期予算を設定。少し余裕を持たせるため、選択されたスライダー値に端数(+7円)を足して判定します
 let currentBudget = 1500;
 
 const ginzaraNames = [
@@ -235,7 +234,6 @@ const ginzaraNames = [
 
 let isRolling = false;
 
-// 追加：スライダーを動かしたときに数値を書き換える関数
 function updateBudget(val) {
     currentBudget = parseInt(val);
     document.getElementById("budgetText").textContent = currentBudget.toLocaleString();
@@ -298,7 +296,6 @@ function gacha() {
     let total = 0;
     let result = [];
     
-    // 121円などの端数に対応するため、スライダー値に+7円のバッファを持たせます
     const maxLimit = currentBudget + 7; 
 
     for (let [name, price] of items) {
