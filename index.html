@@ -114,9 +114,6 @@ button:hover { background: #005fa3; }
 
 <div class="allergy-box">
     <h3>除外</h3>
-    <label><input type="checkbox" value="えび" class="allergy"> えび</label>
-    <label><input type="checkbox" value="たまご" class="allergy"> 卵</label>
-    <label><input type="checkbox" value="乳" class="allergy"> 乳</label>
     <label><input type="checkbox" value="そば" class="allergy"> そば</label>
     <label><input type="checkbox" value="魚卵" class="allergy"> 魚卵</label>
     <label><input type="checkbox" value="軍艦" class="allergy"> 軍艦</label>
@@ -208,18 +205,7 @@ const ginzaraNames = [
 let isRolling = false;
 
 function isAllergyItem(name, allergies) {
-    if (allergies.includes("えび") && (name.includes("えび") || name.includes("エビ"))) return true;
-
-    if (allergies.includes("たまご") && (
-        name.includes("たまご") || name.includes("ツナ") || name.includes("コーン軍艦") ||
-        name.includes("マヨ") || name.includes("タルタル") || name.includes("ケーキ") ||
-        name.includes("ガトーショコラ") || name.includes("ミルクレープ") || name.includes("茶碗蒸し") || name.includes("プリン")
-    )) return true;
-
-    if (allergies.includes("乳") && (
-        name.includes("チーズ") || name.includes("アイス") || name.includes("ガトーショコラ") ||
-        name.includes("ミルクレープ") || name.includes("ケーキ") || name.includes("ホイップ")
-    )) return true;
+    // 修正：えび、たまご、乳の判定ロジックを削除
 
     if (allergies.includes("そば") && (name.includes("そば") || name.includes("スマイル"))) return true;
 
@@ -374,7 +360,6 @@ function showResult(result, total) {
                 rarity = "★R";
                 style = "color: #ff69b4; font-weight: bold; text-shadow: 0 0 6px #ffb6c1;";
             }
-            /* 修正：ラーメン、またはお酒系（ビール、サワー、焼酎、金勝山、ハイボール）の場合に★★SRを適用 */
             else if (ramenNames.includes(item.name) || 
                      item.name.includes("ビール") || item.name.includes("サワー") || 
                      item.name.includes("焼酎") || item.name.includes("金勝山") || item.name.includes("ハイボール")) {
