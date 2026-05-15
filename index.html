@@ -269,7 +269,7 @@ function gacha() {
             return !isAllergyItem(name, allergies);
         });
 
-        // 修正：Fisher-Yatesシャッフルアルゴリズムで安全にランダム化
+        // Fisher-Yatesシャッフル
         for (let i = items.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [items[i], items[j]] = [items[j], items[i]];
@@ -319,7 +319,7 @@ function showResult(result, total) {
                 "濃厚ガトーショコラ","ミルクレープ","たまごプリン","コーヒーゼリー",
                 "コーヒーゼリー (バニラアイスのせ)","黒糖きなこ豆乳プリン","黒糖のわらびもち",
                 "黒糖のわらびもち バニラアイス添え","三色だんご","大学いも",
-                "大学いも バニラアイス添え","フレッシュパイン","は〇アイス (バニラ)",
+                "大学いom バニラアイス添え","フレッシュパイン","は〇アイス (バニラ)",
                 "は〇アイス (チョコレート)","豆乳いちごアイス","ティラミスケーキ",
                 "白桃フロマージュパルフェ","キャラメルモンブラン","完熟マンゴー"
             ];
@@ -338,10 +338,6 @@ function showResult(result, total) {
                 "チーズカリカリポテト","北海道十勝コーンコロッケ","北海道十勝コーンコロッケ(ソース付き)",
                 "いか天握り","いか天握りガーリックマヨ","えび天握り","いか天握りおろし盛り",
                 "えび天握りおろし盛り","かき揚げ握り"
-            ];
-
-            const smileNames = [
- 　　　　　　"スマイル"
             ];
             
             if (item.price >= 1000000000) {
@@ -364,16 +360,18 @@ function showResult(result, total) {
                 if (!document.getElementById("godTitle")) {
                     const godMsg = document.createElement("h1");
                     godMsg.id = "godTitle";
-                    godMsg.innerHTML = "株式会社ゼ●ショーホールディングス降臨";
+                    godMsg.innerHTML = "株式会社ゼ〇ショーホールディングス降臨";
                     godMsg.style.fontSize = "40px";
                     godMsg.style.color = "white";
                     godMsg.style.textShadow = "0 0 10px red, 0 0 20px yellow, 0 0 40px cyan";
                     resultDiv.prepend(godMsg);
                 }
             }
-            else if (smileNames.includes(item.name)) {
+            /* 修正：名前に「スマイル」が含まれている場合はSSRに */
+            else if (item.name.includes("スマイル")) {
                 rarity = "★SSSR";
                 style = "color: #ff9900; font-weight: bold; text-shadow: 0 0 8px #ffd27f;";
+                hasSSR = true; // SSR演出フラグをONにする
             }
             else if (desertNames.includes(item.name)) {
                 rarity = "★R";
@@ -389,7 +387,7 @@ function showResult(result, total) {
             }
             else if (ginzaraNames.includes(item.name)) {
                 rarity = "★R";
-                style = "color: silver; font-weight: bold; text-shadow: 0 0 6px #dcdcdc;"; // 修正：#silverをsilverに修正
+                style = "color: silver; font-weight: bold; text-shadow: 0 0 6px #dcdcdc;";
             }
             else {
                 rarity = "N";
@@ -420,7 +418,7 @@ function showResult(result, total) {
 
             resultDiv.appendChild(totalText);
 
-            if (hasSSSR) {
+            if (hasSSR) {
                 document.body.style.backgroundImage = "linear-gradient(45deg, orange, yellow )";
                 const msg = document.createElement("h2");
                 msg.textContent = "🎉 SSSR獲得！";
