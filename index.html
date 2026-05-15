@@ -154,10 +154,6 @@ button:hover { background: #005fa3; }
 
 <div id="result"></div>
 
-<audio id="spin" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
-<audio id="item" src="https://www.soundjay.com/button/sounds/button-09.mp3"></audio>
-<audio id="rare" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
-
 <script>
 const woodBg = "url('https://www.transparenttextures.com/patterns/wood-pattern.png')";
 const woodColor = "#c89b6d";
@@ -271,8 +267,6 @@ function gacha() {
     const oldTitle = document.getElementById("godTitle");
     if (oldTitle) oldTitle.remove();
 
-    document.getElementById("spin").play();
-
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "<h2>注文中...</h2>";
 
@@ -370,7 +364,6 @@ function showResult(result, total) {
                     -webkit-text-fill-color: transparent;
                     text-shadow: 0 0 10px white, 0 0 20px cyan, 0 0 40px magenta, 0 0 80px red;
                 `;
-                document.getElementById("rare").play();
                 hasSSR = true;
                 isShine = true;
                 li.classList.add("shine");
@@ -423,7 +416,6 @@ function showResult(result, total) {
 
             if (isShine) li.classList.add("shine");
 
-            document.getElementById("item").play();
             list.appendChild(li);
 
             i++;
