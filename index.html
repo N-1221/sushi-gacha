@@ -249,7 +249,6 @@ function gacha() {
     document.body.style.backgroundImage = woodBg;
     document.body.style.backgroundColor = woodColor;
 
-    // 前回のGOD降臨タイトルがあれば削除
     const oldTitle = document.getElementById("godTitle");
     if (oldTitle) oldTitle.remove();
 
@@ -269,7 +268,6 @@ function gacha() {
             return !isAllergyItem(name, allergies);
         });
 
-        // Fisher-Yatesシャッフル
         for (let i = items.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [items[i], items[j]] = [items[j], items[i]];
@@ -319,7 +317,7 @@ function showResult(result, total) {
                 "濃厚ガトーショコラ","ミルクレープ","たまごプリン","コーヒーゼリー",
                 "コーヒーゼリー (バニラアイスのせ)","黒糖きなこ豆乳プリン","黒糖のわらびもち",
                 "黒糖のわらびもち バニラアイス添え","三色だんご","大学いも",
-                "大学いom バニラアイス添え","フレッシュパイン","は〇アイス (バニラ)",
+                "大学いも バニラアイス添え","フレッシュパイン","は〇アイス (バニラ)",
                 "は〇アイス (チョコレート)","豆乳いちごアイス","ティラミスケーキ",
                 "白桃フロマージュパルフェ","キャラメルモンブラン","完熟マンゴー"
             ];
@@ -367,17 +365,19 @@ function showResult(result, total) {
                     resultDiv.prepend(godMsg);
                 }
             }
-            /* 修正：名前に「スマイル」が含まれている場合はSSRに */
             else if (item.name.includes("スマイル")) {
                 rarity = "★SSSR";
                 style = "color: #ff9900; font-weight: bold; text-shadow: 0 0 8px #ffd27f;";
-                hasSSR = true; // SSR演出フラグをONにする
+                hasSSR = true;
             }
             else if (desertNames.includes(item.name)) {
                 rarity = "★R";
                 style = "color: #ff69b4; font-weight: bold; text-shadow: 0 0 6px #ffb6c1;";
             }
-            else if (ramenNames.includes(item.name)) {
+            /* 修正：ラーメン、またはお酒系（ビール、サワー、焼酎、金勝山、ハイボール）の場合に★★SRを適用 */
+            else if (ramenNames.includes(item.name) || 
+                     item.name.includes("ビール") || item.name.includes("サワー") || 
+                     item.name.includes("焼酎") || item.name.includes("金勝山") || item.name.includes("ハイボール")) {
                 rarity = "★★SR";
                 style = "color: #ff9900; font-weight: bold; text-shadow: 0 0 8px #ffd27f;";
             }
