@@ -54,7 +54,7 @@ button {
 }
 button:hover { background: #005fa3; }
 
-/* 変更箇所：除外設定を開閉するボタンのスタイル */
+/* 除外設定を開閉するボタンのスタイル */
 .toggle-btn {
     background: #555;
     font-size: 14px;
@@ -125,7 +125,7 @@ button:hover { background: #005fa3; }
     animation: shine 0.4s ease;
 }
 
-/* 変更箇所：最初から非表示にする設定を追加 */
+/* 🛠️ 修正箇所：確実に最初は隠れるように設定を変更 */
 .allergy-box {
     margin: 10px auto 20px auto;
     background: rgba(255,255,255,0.85);
@@ -133,7 +133,7 @@ button:hover { background: #005fa3; }
     padding: 15px 25px;
     border-radius: 10px;
     border: 2px solid #8b5a2b;
-    display: none; /* ← ここで最初は非表示にしています */
+    display: none; /* ← 最初は絶対に非表示 */
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
@@ -171,7 +171,7 @@ button:hover { background: #005fa3; }
 
 <button onclick="toggleAllergy()" class="toggle-btn" id="toggleBtn">▼ 除外設定を開く</button>
 
-<div class="allergy-box" id="allergyBox">
+<div class="allergy-box" id="allergyBox" style="display: none;">
     <h3>除外メニュー</h3>
     <label><input type="checkbox" value="そば" class="allergy"> そば</label>
     <label><input type="checkbox" value="魚卵" class="allergy"> 魚卵</label>
@@ -188,26 +188,28 @@ button:hover { background: #005fa3; }
 const woodBg = "url('https://www.transparenttextures.com/patterns/wood-pattern.png')";
 const woodColor = "#c89b6d";
 
-// 音声ファイルを読み込み、音量を半分(0.5)に設定
+// 音声ファイルを読み込み
 const chimesSound = new Audio('hamashou-si-dao-zhao.mp3');
-chimesSound.volume = 0.5;
+// 🛠️ 修正箇所：音量をさらに半分（元の4分の1の 0.25）に下げました
+chimesSound.volume = 0.25;
 
 // 【音が出ない対策】ユーザーが画面を始めて触った時にオーディオを有効化する
 document.addEventListener('click', () => {
     chimesSound.load();
 }, { once: true });
 
-// 変更箇所：除外項目の表示・非表示を切り替える機能
+// 除外項目の表示・非表示を切り替える機能
 function toggleAllergy() {
     const box = document.getElementById("allergyBox");
     const btn = document.getElementById("toggleBtn");
     
-    if (box.style.display === "flex") {
-        box.style.display = "none";
-        btn.textContent = "▼ 除外設定を開く";
-    } else {
+    // 🛠️ 修正箇所：判定をシンプルにして確実に切り替わるように修正
+    if (box.style.display === "none") {
         box.style.display = "flex";
         btn.textContent = "▲ 除外設定を閉じる";
+    } else {
+        box.style.display = "none";
+        btn.textContent = "▼ 除外設定を開く";
     }
 }
 
