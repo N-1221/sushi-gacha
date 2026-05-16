@@ -65,6 +65,19 @@ button:hover { background: #005fa3; }
 }
 .toggle-btn:hover { background: #333; }
 
+/* 🔊 新設：音量切り替えボタンのスタイル */
+.mute-btn {
+    background: #e0a800;
+    color: #111;
+    font-size: 14px;
+    padding: 6px 12px;
+    margin: 5px auto;
+    display: block;
+    width: auto;
+    font-weight: bold;
+}
+.mute-btn:hover { background: #c69500; }
+
 #result {
     margin-top: 30px;
     background: rgba(255,255,255,0.9);
@@ -125,7 +138,7 @@ button:hover { background: #005fa3; }
     animation: shine 0.4s ease;
 }
 
-/* 🛠️ 修正箇所：確実に最初は隠れるように設定を変更 */
+/* 最初から隠れる設定（全角スペースのバグを修正） */
 .allergy-box {
     margin: 10px auto 20px auto;
     background: rgba(255,255,255,0.85);
@@ -169,6 +182,8 @@ button:hover { background: #005fa3; }
 
 <button onclick="gacha()">ガチャを回す</button>
 
+<button onclick="toggleMute()" class="mute-btn" id="muteBtn">🔊 音声: オン</button>
+
 <button onclick="toggleAllergy()" class="toggle-btn" id="toggleBtn">▼ 除外設定を開く</button>
 
 <div class="allergy-box" id="allergyBox" style="display: none;">
@@ -190,7 +205,7 @@ const woodColor = "#c89b6d";
 
 // 音声ファイルを読み込み
 const chimesSound = new Audio('hamashou-si-dao-zhao.mp3');
-// 🛠️ 修正箇所：音量をさらに半分（元の4分の1の 0.25）に下げました
+// デフォルトの音量は控えめの0.25
 chimesSound.volume = 0.25;
 
 // 【音が出ない対策】ユーザーが画面を始めて触った時にオーディオを有効化する
@@ -198,12 +213,25 @@ document.addEventListener('click', () => {
     chimesSound.load();
 }, { once: true });
 
-// 除外項目の表示・非表示を切り替える機能
+// 🔊 新設：音量のオン・オフを切り替える機能
+function toggleMute() {
+    const btn = document.getElementById("muteBtn");
+    if (chimesSound.muted) {
+        chimesSound.muted = false;
+        btn.textContent = "🔊 音声: オン";
+        btn.style.background = "#e0a800";
+    } else {
+        chimesSound.muted = true;
+        btn.textContent = "🔇 音声: ミュート";
+        btn.style.background = "#aaa";
+    }
+}
+
+// 除外項目の表示・非表示を切り替える機能（コード内の全角スペースを除去）
 function toggleAllergy() {
     const box = document.getElementById("allergyBox");
     const btn = document.getElementById("toggleBtn");
     
-    // 🛠️ 修正箇所：判定をシンプルにして確実に切り替わるように修正
     if (box.style.display === "none") {
         box.style.display = "flex";
         btn.textContent = "▲ 除外設定を閉じる";
@@ -316,7 +344,7 @@ function gacha() {
     if (isRolling) return;
     isRolling = true;
 
-    // ボタンが押された瞬間にチャイムを鳴らす
+    // ミュートされていなければ音を鳴らす
     chimesSound.currentTime = 0;
     chimesSound.play().catch(error => {
         console.log("音声の再生に失敗しました:", error);
