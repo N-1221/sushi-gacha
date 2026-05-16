@@ -65,7 +65,7 @@ button:hover { background: #005fa3; }
 }
 .toggle-btn:hover { background: #333; }
 
-/* 🔊 新設：音量切り替えボタンのスタイル */
+/* 🔊 音量切り替えボタンのスタイル */
 .mute-btn {
     background: #e0a800;
     color: #111;
@@ -125,7 +125,7 @@ button:hover { background: #005fa3; }
     text-align: right;
 }
 
-/* ✨ キラーン */
+/* ✨ キラーン（揺れアニメーション） */
 @keyframes shine {
     0% { transform: translate(2px, 2px) rotate(0deg); }
     25% { transform: translate(-2px, 2px) rotate(-1deg); }
@@ -133,12 +133,23 @@ button:hover { background: #005fa3; }
     75% { transform: translate(-2px, -2px) rotate(0deg); }
     100% { transform: translate(2px, 2px) rotate(1deg); }
 }
-
 .shine {
     animation: shine 0.4s ease;
 }
 
-/* 最初から隠れる設定（全角スペースのバグを修正） */
+/* 🌈 修正箇所：背景をうねうね動かすための虹色アニメーション */
+@keyframes rainbowBg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.god-rainbow-bg {
+    background-image: linear-gradient(270deg, #ff7f7f, #ffbf7f, #ffff7f, #7fff7f, #7f9fff, #bfff7f, #ff7f7f) !important;
+    background-size: 400% 400% !important;
+    animation: rainbowBg 5s ease infinite !important;
+}
+
+/* 最初から隠れる設定 */
 .allergy-box {
     margin: 10px auto 20px auto;
     background: rgba(255,255,255,0.85);
@@ -146,7 +157,7 @@ button:hover { background: #005fa3; }
     padding: 15px 25px;
     border-radius: 10px;
     border: 2px solid #8b5a2b;
-    display: none; /* ← 最初は絶対に非表示 */
+    display: none;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
@@ -205,7 +216,6 @@ const woodColor = "#c89b6d";
 
 // 音声ファイルを読み込み
 const chimesSound = new Audio('hamashou-si-dao-zhao.mp3');
-// デフォルトの音量は控えめの0.25
 chimesSound.volume = 0.25;
 
 // 【音が出ない対策】ユーザーが画面を始めて触った時にオーディオを有効化する
@@ -213,7 +223,7 @@ document.addEventListener('click', () => {
     chimesSound.load();
 }, { once: true });
 
-// 🔊 新設：音量のオン・オフを切り替える機能
+// 🔊 音量のオン・オフを切り替える機能
 function toggleMute() {
     const btn = document.getElementById("muteBtn");
     if (chimesSound.muted) {
@@ -227,7 +237,7 @@ function toggleMute() {
     }
 }
 
-// 除外項目の表示・非表示を切り替える機能（コード内の全角スペースを除去）
+// 除外項目の表示・非表示を切り替える機能
 function toggleAllergy() {
     const box = document.getElementById("allergyBox");
     const btn = document.getElementById("toggleBtn");
@@ -344,12 +354,13 @@ function gacha() {
     if (isRolling) return;
     isRolling = true;
 
-    // ミュートされていなければ音を鳴らす
     chimesSound.currentTime = 0;
     chimesSound.play().catch(error => {
         console.log("音声の再生に失敗しました:", error);
     });
     
+    // ガチャを回したタイミングで、いったん背景クラスを外して通常背景に戻す
+    document.body.className = "";
     document.body.style.backgroundImage = woodBg;
     document.body.style.backgroundColor = woodColor;
 
@@ -407,6 +418,7 @@ function showResult(result, total) {
 
     let i = 0;
     let hasSSR = false;
+    let isGodDetected = false; // GODが出たかどうかの判定用
 
     function loop() {
         if (i < result.length) {
@@ -447,16 +459,18 @@ function showResult(result, total) {
                 style = `
                     font-weight: bold;
                     font-size: 24px;
-                    background: linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
-                    background-size: 400% 400%;
+                    background: linear-gradient(90deg, #660000, #ff0000, #ffcc00, #660000);
+                    background-size: 200% auto;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
-                    text-shadow: 0 0 10px white, 0 0 20px cyan, 0 0 40px magenta, 0 0 80px red;
+                    text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
                 `;
-                hasSSR = true;
                 isShine = true;
+                isGodDetected = true; // GODフラグをON
                 li.classList.add("shine");
-                document.body.style.backgroundImage = "linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet)";
+                
+                // 🌈 修正箇所：背景をアニメーション付きの虹色に変更
+                document.body.className = "god-rainbow-bg";
                 
                 if (!document.getElementById("godTitle")) {
                     const godMsg = document.createElement("h1");
@@ -464,7 +478,7 @@ function showResult(result, total) {
                     godMsg.innerHTML = "株式会社ゼ〇ショーホールディングス降臨";
                     godMsg.style.fontSize = "40px";
                     godMsg.style.color = "white";
-                    godMsg.style.textShadow = "0 0 10px red, 0 0 20px yellow, 0 0 40px cyan";
+                    godMsg.style.textShadow = "0 0 15px red, 0 0 25px yellow, 0 0 35px cyan";
                     resultDiv.prepend(godMsg);
                 }
             }
@@ -520,7 +534,10 @@ function showResult(result, total) {
 
             resultDiv.appendChild(totalText);
 
-            if (hasSSR) {
+            // 🌈 修正箇所：GODが出た場合は虹色背景を維持し、それ以外の場合のみ背景を変更する
+            if (isGodDetected) {
+                // 背景はアニメーション虹色のままキープ
+            } else if (hasSSR) {
                 document.body.style.backgroundImage = "linear-gradient(45deg, orange, yellow )";
                 const msg = document.createElement("h2");
                 msg.textContent = "🎉 SSSR獲得！";
