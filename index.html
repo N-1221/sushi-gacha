@@ -290,7 +290,7 @@ const menu = {
     "えび天きつねうどん": 440, "えび天鴨うどん": 484, "えび天鴨そば": 484, "あさりとあおさのうどん": 418,
     "しょう油ラーメン": 440, "焼豚増量!しょう油ラーメン": 528, "貝節塩ラーメン": 440, "焼豚増量!貝節塩ラーメン": 528,
     "あおさみそ汁": 154, "あさりみそ汁": 264, "とん汁": 264, "茶碗蒸し": 220, "旨だしたこ焼き(6個入り)": 374,
-    "チーズたこ焼き(6個入り)": 418, "旨だしたたこ焼き(3個入り)": 220, "鶏のから揚げ(4個入り)": 374,
+    "チーズたこ焼き(6個入り)": 418, "旨だしたこ焼き(3個入り)": 220, "鶏のから揚げ(4個入り)": 374,
     "鶏のから揚げ(2個入り)": 220, "なんこつのから揚げ": 308, "カリカリポテト": 264, "MEGAカリカリポテト": 440,
     "カリカリポテト(バター醤油味)": 308, "MEGAカリカリポテト(バター醤油味)": 484, "チーズカリカリポテト": 330,
     "まぐろ南蛮": 308, "旨だし厚焼きたまご": 198, "旨だし厚焼きたまごおろし添え": 264, "あさりの酒蒸し": 308,
@@ -341,15 +341,16 @@ function isAllergyItem(name, allergies) {
 
     if (allergies.includes("魚卵") && (
         name.includes("いくら") || name.includes("イクラ") || name.includes("つぶっこ") ||
-        name.includes("たら") || name.includes("カリフォルニアロール")
+        name.includes("たらこ") || name.includes("たらマヨ") || name.includes("カリフォルニアロール")
     )) return true;
 
     if (allergies.includes("軍艦") && name.includes("軍艦")) return true;
     if (allergies.includes("巻き") && name.includes("巻")) return true;
 
     if (allergies.includes("アルコール") && (
-        name.includes("アルコール") || name.includes("ビール") || name.includes("サワー") ||
-        name.includes("焼酎") || name.includes("金勝山") || name.includes("ハイボール")
+        name.includes("ビール") || name.includes("サワー") ||
+        name.includes("焼酎") || name.includes("金勝山") || name.includes("ハイボール") ||
+        name.includes("晴雲") || name.includes("薩摩宝山") || name.includes("白水")
     )) return true;
 
     if (allergies.includes("追加トッピング") && name.includes("追加トッピング")) return true;
@@ -358,7 +359,7 @@ function isAllergyItem(name, allergies) {
 
     if (allergies.includes("ソフトドリンク") && (
         name.includes("ジュース") || name.includes("コーヒー") || name.includes("ラテ") ||
-        name.includes("フロート") 
+        name.includes("フロート") || name.includes("ソーダ") || name.includes("ノンアルコール")
     )) return true;
     
     return false;
@@ -449,7 +450,7 @@ function showResult(result, total) {
                 "黒糖のわらびもち バニラアイス添え","三色だんご","大学いも",
                 "大学いも バニラアイス添え","フレッシュパイン","は〇アイス (バニラ)",
                 "は〇アイス (チョコレート)","豆乳いちごアイス","ティラミスケーキ",
-                "白桃フロマージュパルフェ","キャラメルモンブラン","完熟マンゴー"
+                "白桃フロマージュパルフェ","キャラメルモンブラン","完熟アップルマンゴー"
             ];
 
             const ramenNames = [
